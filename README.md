@@ -12,6 +12,28 @@ This demo illustrates how to use the WGL_NV_DX_Interop extension to efficiently 
 
 This demo requires the DirectX SDK to be installed, and may require the Windows SDK to be installed as well. 
 
+To build manually without using the projects:
+
+(pre-2013 Visual Studio): cl /MD /O2 /W3 /GL /Zi /I.\include 
+/I$(headers_directory_for_libepoxy) /DUNICODE/D_UNICODE 
+SharedResource.cpp /c
+
+(Visual Studio 2013 or later): cl /MD /O2 /W3 /GL /Zi 
+/I$(headers_directory_for_libepoxy) /DUNICODE /D_UNICODE 
+SharedResource.cpp /c
+
+(MinGW/GCC): g++ -O3 -g -I$(headers_directory_for_libepoxy) -DUNICODE 
+-D_UNICODE SharedResource.cpp -c
+
+Link with the following libraries:
+d3d9
+d3dx9
+epoxy
+user32
+shell32
+gdi32
+
+
 ## Compatibility
 
 Since the time the original article was written, it seems that either the Nvidia driver or modern Nvidia cards, as well as the most recent Intel graphics (Skylake) no longer supports this extension, resulting in failures ranging from black screens to driver crashes. I haven't tested on the most recent AMD cards. I was able to verify that with slightly older Intel hardware (Haswell, HD 4200 - HD 5200) that this extension works across Windows 7, Windows 8.1, and Windows 10. I had previously tested with older AMD hardware (HD 6950) and older Nvidia hardware (GTX 570) which both worked with the texture and offscreen plain methods on Windows 7. 
