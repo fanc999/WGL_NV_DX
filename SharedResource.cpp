@@ -3,8 +3,7 @@
 #include <d3d9.h>
 #include <d3dx9.h>
 #include <assert.h>
-#include "glew.h"
-#include "wglew.h"
+#include <epoxy/wgl.h>
 
 #define SCREEN_WIDTH 300
 #define SCREEN_HEIGHT 300
@@ -275,10 +274,8 @@ void InitGL(HWND hWndGL)
     HGLRC hRC = wglCreateContext(g_hDCGL);
     wglMakeCurrent(g_hDCGL, hRC);
 
-    GLenum x = glewInit();
-
     // Register the shared DX texture with OGL
-    if (WGLEW_NV_DX_interop)
+    if (epoxy_has_wgl_extension (g_hDCGL, "WGL_NV_DX_interop"))
     {
         // Acquire a handle to the D3D device for use in OGL
         g_hDX9Device = wglDXOpenDeviceNV(g_pDevice);
@@ -412,7 +409,7 @@ void RenderGL(void)
 
 void Destroy(void)
 {
-    if (WGLEW_NV_DX_interop)
+    if (epoxy_has_wgl_extension (g_hDCGL, "WGL_NV_DX_interop"))
     {
         if (g_hGLSharedTexture)
             wglDXUnregisterObjectNV(g_hDX9Device, g_hGLSharedTexture);
